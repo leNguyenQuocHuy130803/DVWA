@@ -1,0 +1,22 @@
+version: '3' # Khai báo version Docker Compose, phổ biến nhất
+
+services:
+  dvwa:
+    # Service chính là ứng dụng DVWA
+    image: vulnerables/web-dvwa # Sử dụng image chính thức DVWA từ Docker Hub
+    ports:
+      - "80:80" # Mở port 80 để truy cập DVWA qua trình duyệt
+    restart: always
+    environment:
+      - MYSQL_USER=dvwa
+      - MYSQL_PASSWORD=p@ssw0rd
+      - MYSQL_DATABASE=dvwa
+      - MYSQL_HOST=db # kết nối đến service `db`
+    depends_on:
+      - db # Chờ service MySQL khởi động trước
+
+  db:
+    # Service cho MySQL
+    image: mysql:5.7
+    restart: always
+    environment: MYSQL_ROOT_PASSWORD=root MYSQL_DATABASE=dvwa MYSQL_USER=dvwa MYSQL_PASSWORD=p@ssw0rd
